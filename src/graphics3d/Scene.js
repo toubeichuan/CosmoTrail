@@ -19,7 +19,7 @@ function drawBody(b) {
 	b.draw();
 }
 
-export default class JSOrreryScene {
+export default class CosmoTrailScene {
 	createStage(rootDomEl, scenario, gui, universe) {
 		this.width = (scenario.sceneSize && scenario.sceneSize.width) || rootDomEl.offsetWidth;
 		this.height = (scenario.sceneSize && scenario.sceneSize.height) || rootDomEl.offsetHeight;
