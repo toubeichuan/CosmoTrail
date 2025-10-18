@@ -1,0 +1,231 @@
+$serif : 'Poppins', sans-serif;
+$sans: 'Inter', sans-serif;
+
+
+$formFont : $sans;
+$titleFont: $sans;
+$textFont: $sans;
+
+$widgetBorderCol: rgba(255, 255, 255, 0.1);
+$inputBorderCol : #333;
+$inputBg: rgba(255, 255, 255, 0.15);
+$calendarBg : rgba(25, 25, 25, 0.95);
+$labelBg : rgba(25, 25, 25, 0.7);
+$txCol: #e0e0e0;
+
+$prelaodCol : #444;
+$labelLineCol : #333;
+
+$menuH : 45px;
+
+
+// @mixin unselectable(){
+// 	cursor: default !important;
+// 	-moz-user-select: -moz-none;
+// 	-khtml-user-select: none;
+// 	-webkit-user-select: none;
+// 	-ms-user-select: none;
+// 	user-select: none;
+// 	pointer-events:none;
+// }
+
+@mixin unselectable($clickable: false){
+	cursor: default !important;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	
+	@if $clickable {
+		pointer-events: auto;
+	} @else {
+		pointer-events: none;
+	}
+}
+
+
+
+body#CosmoTrail {
+	opacity: 1;
+	margin:0;
+	padding:0;
+	// font-family:$formFont;
+  font-family:Roboto;
+	font-size:11px;
+	color: $txCol;
+	background:linear-gradient(#000000, #000000);
+  //background: radial-gradient(circle at center, #435e95, #000000);
+	overflow:hidden;
+	 -webkit-font-smoothing: antialiased;
+	height: 100vh;
+
+	h1, h2{
+		font-family:$titleFont;
+		font-weight:normal;
+	}
+	
+	a{
+		color:#fff;
+	}
+
+	.helpContent{
+
+		position:absolute;
+		top:0;
+		left:0;
+		z-index:150;
+		// background: rgba(0, 0, 0, 0.8);
+    background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(10px);
+		width : 60%;
+		min-width:400px;
+		max-height: 80%;
+		padding: 0;
+		border-bottom: 1px #222 solid;
+		font-family:$textFont;
+		font-size: 16px;
+		letter-spacing: 0.5px;
+		line-height: 1.8em;
+		color:#aaa;
+		text-align:justify;
+		overflow-y:scroll;
+		opacity: 0;
+    visibility: hidden;
+  
+    transition: opacity 0.4s ease, transform 0.3s ease;
+    transform: translateY(10px);
+
+		padding: 80px 20%;
+	
+    &.visible {
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* ------------------------------------------------ */
+
+		h2{
+			color:#fff;
+			text-shadow: 0 0 2px #555;
+		}
+	
+	}
+	
+	.close {
+		cursor:pointer;
+		position:absolute;
+		top: 10px;
+		right:10px;
+		border:0;
+		font-size:22px;
+		transition-duration: 0.5s;
+		// &:hover{
+		// 	color:#fff;
+		// }
+    &:hover {
+      color:#fff;
+      transform: rotate(90deg);
+    }
+		&.inflow{
+			font-size:inherit;
+			position:auto;
+			right: auto;
+			top: auto;
+		}
+	
+	}
+	
+}
+
+// #credits{
+// 	position:absolute;
+// 	bottom: 10px;
+// 	right: 10px;
+// 	cursor:pointer;
+// }
+
+.planetLabel{
+	@include unselectable();
+	position:absolute;
+	top:0;
+	left:0;
+	color:#fff;
+	//background:$labelBg;
+  background: rgba(30, 30, 30, 0.5);
+	backdrop-filter: blur(5px);
+	border-radius: 6px;
+	padding:3px;
+	font-size:9px;
+	left: 24px;
+	white-space: nowrap;
+	z-index:50;
+}
+
+.eventLabel{
+	@include unselectable();
+	position:absolute;
+	color:#fff;
+	width:2px;
+	height:2px;
+	border-radius: 1px;
+	margin-left:-1px;
+	margin-top:-1px;
+	background:#fff;
+	//display:none !important;
+
+	.line{
+		transform-origin: 0 0;
+		width:1px;
+		height:100px;
+		border-left:1px $labelLineCol solid;
+		position:absolute;
+		left:1px;
+	}
+
+	.tx{
+		position:absolute;
+		background:$labelBg;
+		font-size: 9px;
+		padding:3px;
+		white-space: nowrap;
+		border-bottom:1px $labelLineCol solid;
+		text-align:center;
+	}
+}
+
+.planetSpot {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        margin-top: -10px;
+        margin-left: -10px;
+        border: none;
+        background: transparent;
+        pointer-events: none;
+}
+
+.debug{
+	position:absolute;
+	bottom:10px;
+	right:10px;
+	color:#fff;
+	font-size:10px;
+	z-index:9999;
+}
+
+#stats { 
+	position: absolute;
+	bottom:0;
+	left: 0;
+	#fps {
+		background: transparent !important;
+		#fpsText { color: #aaa !important; }
+		#fpsGraph { display: none; }
+	}
+}
+
+
+@import './components/preloader';
+@import './components/gui';
