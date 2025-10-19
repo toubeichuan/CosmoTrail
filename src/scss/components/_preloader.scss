@@ -52,23 +52,23 @@
 		$planetSz: 6px;
 		width:$orbitSz;
 		height:$orbitSz;
-		border-radius: $orbitSz/2;
+		border-radius: math.div($orbitSz, 2);
 		border:1px #333 solid;
 		position:absolute;
 		top:50%;
-		margin-top:-$orbitSz/2;
+		margin-top: math.div(-$orbitSz, 2);
 		left:50%;
-		margin-left:-$orbitSz/2;
+		margin-left: math.div(-$orbitSz, 2);
 		animation: orbit 2s infinite linear;
 
 		.planet {
 			width:$planetSz;
 			height:$planetSz;
-			border-radius: $planetSz/2;
+			border-radius: math.div($planetSz, 2);
 			background:#333;
 			position:absolute;
-			top:($orbitSz / 2)-($planetSz/2) ;
-			left:-$planetSz/2;
+			top: math.div($orbitSz, 2) - math.div($planetSz, 2);
+			left: math.div(-$planetSz, 2);
 		}
 	}
 }

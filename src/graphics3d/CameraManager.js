@@ -1,7 +1,6 @@
-
 import $ from 'jquery';
 import { Vector3, PerspectiveCamera } from 'three';
-import { OrbitControls } from '../utils/ThreeExamples';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import ExportValues from '../gui/ExportValues';
 import { LOOKFROM_ID, LOOKAT_ID } from '../gui/Gui';
 import { DEG_TO_RAD } from '../core/constants';
@@ -238,4 +237,4 @@ export default class CameraManager {
 			if (cam.CosmoTrail && cam.CosmoTrail.controls) cam.CosmoTrail.controls.removeEventListener('change', this.onControlsUpdate);
 		});
 	}
-};
+}

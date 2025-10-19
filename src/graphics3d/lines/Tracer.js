@@ -1,5 +1,4 @@
-
-import { Vector3, Object3D, LineBasicMaterial, Geometry, Line } from 'three';
+import { Vector3, Object3D, LineBasicMaterial, BufferGeometry, Line, BufferAttribute } from 'three';
 import { darken, hexToRgb, rgbToHex } from '../../utils/ColorUtils';
 
 const SWITCH_TRESHOLD = 0.005;
@@ -30,10 +29,15 @@ export default class Tracer {
 			lineWidth: 4,
 		});
 
-		this.geom = new Geometry();
+		this.geom = new BufferGeometry();
+		const vertices = new Float32Array(this.nVertices * 3);
 		for (let i = 0; i < this.nVertices; i++) {
-			this.geom.vertices.push(new Vector3(0, 0, 0));
+			vertices[i * 3] = 0;
+			vertices[i * 3 + 1] = 0;
+			vertices[i * 3 + 2] = 0;
 		}
+		this.geom.setAttribute('position', new BufferAttribute(vertices, 3));
+		
 		this.line = new Line(this.geom, material);
 		this.line.frustumCulled = false;
 		this.currentVertex = 0;
@@ -66,46 +70,78 @@ export default class Tracer {
 	draw(fromPos) {
 		if (!this.geom) return;
 		const pos = this.setTracePos(fromPos);
-		if (this.geom.vertices[this.currentVertex] && this.geom.vertices[this.currentVertex].distanceTo(pos) === 0) return;
-		this.geom.verticesNeedUpdate = true;
+		
+		const positionAttribute = this.geom.attributes.position;
+		const vertices = positionAttribute.array;
+		
+		const currentIndex = this.currentVertex * 3;
+		if (currentIndex < vertices.length) {
+			const distance = Math.sqrt(
+				Math.pow(vertices[currentIndex] - pos.x, 2) +
+				Math.pow(vertices[currentIndex + 1] - pos.y, 2) +
+				Math.pow(vertices[currentIndex + 2] - pos.z, 2)
+			);
+			
+			if (distance === 0) return;
+		}
+		
+		positionAttribute.needsUpdate = true;
 		
 		if (this.currentVertex < this.lastVertexIdx) {
 			for (let i = this.currentVertex; i < this.nVertices; i++) {
-				this.geom.vertices[i].copy(pos);
+				const idx = i * 3;
+				vertices[idx] = pos.x;
+				vertices[idx + 1] = pos.y;
+				vertices[idx + 2] = pos.z;
 			}
 		} else {
 			if (this.switchVertex) {
 				for (let i = 0; i < this.lastVertexIdx; i++) {
-					this.geom.vertices[i].copy(this.geom.vertices[i + 1]);
+					const idx1 = i * 3;
+					const idx2 = (i + 1) * 3;
+					vertices[idx1] = vertices[idx2];
+					vertices[idx1 + 1] = vertices[idx2 + 1];
+					vertices[idx1 + 2] = vertices[idx2 + 2];
 				}
 				this.switchVertex = false;
 			}
-			this.geom.vertices[this.lastVertexIdx].copy(pos);
+			
+			const lastIdx = this.lastVertexIdx * 3;
+			vertices[lastIdx] = pos.x;
+			vertices[lastIdx + 1] = pos.y;
+			vertices[lastIdx + 2] = pos.z;
 		}
 
-		const v2 = this.geom.vertices[this.currentVertex - 2]; 
-		const v1 = this.geom.vertices[this.currentVertex - 1]; 
-		const v0 = this.geom.vertices[this.currentVertex];
+		const v2Idx = (this.currentVertex - 2) * 3;
+		const v1Idx = (this.currentVertex - 1) * 3; 
+		const v0Idx = this.currentVertex * 3;
 		
-		if (v1 && v2) {
-
+		if (v1Idx >= 0 && v2Idx >= 0) {
 			if (!this.lastPathDirection) {
-				const a = v1.clone().sub(v2);
+				const a = new Vector3(
+					vertices[v1Idx] - vertices[v2Idx],
+					vertices[v1Idx + 1] - vertices[v2Idx + 1],
+					vertices[v1Idx + 2] - vertices[v2Idx + 2]
+				);
 				this.lastPathDirection = Math.abs(a.angleTo(vNorm));
 			}
-			const curPath = v0.clone().sub(this.previousPos);
+			
+			const curPath = new Vector3(
+				pos.x - this.previousPos.x,
+				pos.y - this.previousPos.y,
+				pos.z - this.previousPos.z
+			);
+			
 			const diff = Math.abs(this.lastPathDirection - Math.abs(curPath.angleTo(vNorm)));
 			if (diff > SWITCH_TRESHOLD) {
 				this.changeVertex();
 			}
-
 		}
 
-		if (!v1 || !v2) {
+		if (v1Idx < 0 || v2Idx < 0) {
 			this.changeVertex();
 		}
 		this.previousPos = pos;
-					
 	}
 
 	setTracePos(pos) {
@@ -115,5 +151,4 @@ export default class Tracer {
 		}
 		return pos;
 	}
-
-};
+}

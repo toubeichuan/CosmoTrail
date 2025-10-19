@@ -90,9 +90,9 @@ function generateStars(shaders, stars, starTexture, size, rendered) {
 		}		
 	}
 
-	geometry.addAttribute('position', new BufferAttribute(positions, 3));
-	geometry.addAttribute('customColor', new BufferAttribute(colors, 3));
-	geometry.addAttribute('size', new BufferAttribute(sizes, 1));
+	geometry.setAttribute('position', new BufferAttribute(positions, 3));
+	geometry.setAttribute('customColor', new BufferAttribute(colors, 3));
+	geometry.setAttribute('size', new BufferAttribute(sizes, 1));
 
 	const shaderMaterial = new ShaderMaterial({
 		uniforms: {
