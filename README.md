@@ -13,8 +13,13 @@
   - [Features](#features)
   - [Data Sources](#data-sources)
   - [Quick Start](#quick-start)
+- [1) Get the code](#1-get-the-code)
+- [2) Install dependencies](#2-install-dependencies)
+- [3) Run in development](#3-run-in-development)
   - [Usage](#usage)
-  - [Project Structure](#project-structure)
+    - [System Parameters](#system-parameters)
+    - [Viewport Telemetry](#viewport-telemetry)
+    - [Planet Information Panel](#planet-information-panel)
   - [Acknowledgments](#acknowledgments)
   - [License](#license)
 
@@ -51,7 +56,7 @@ Unlike conventional planetarium software that requires installation and local re
 ---
 
 ## Quick Start
-> Requires **Node.js 18+** and a modern browser with **WebGL2** support.
+> Requires **Node.js 25+** and a modern browser with **WebGL2** support.
 
 ```bash
 # 1) Get the code
@@ -63,10 +68,6 @@ npm install
 
 # 3) Run in development
 npm start
-
-# 4) Build for production
-npm run build
-```
 
 > Note: The development server will start on port 2000. Access the application at http://localhost:2000
 
