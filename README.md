@@ -13,9 +13,6 @@
   - [Features](#features)
   - [Data Sources](#data-sources)
   - [Quick Start](#quick-start)
-- [1) Get the code](#1-get-the-code)
-- [2) Install dependencies](#2-install-dependencies)
-- [3) Run in development](#3-run-in-development)
   - [Usage](#usage)
     - [System Parameters](#system-parameters)
     - [Viewport Telemetry](#viewport-telemetry)
@@ -68,6 +65,7 @@ npm install
 
 # 3) Run in development
 npm start
+```
 
 > Note: The development server will start on port 2000. Access the application at http://localhost:2000
 
