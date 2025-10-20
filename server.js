@@ -10,7 +10,10 @@ app.use(require('morgan')('short'));
 	var compiler = webpack(webpackConfig);
 
 	app.use(require('webpack-dev-middleware')(compiler, {
-		noInfo: true, publicPath: webpackConfig.output.publicPath,
+		publicPath: webpackConfig.output.publicPath,
+		stats: {
+			colors: true
+		}
 	}));
 
 	app.use(require('webpack-hot-middleware')(compiler, {
@@ -26,7 +29,7 @@ app.get('/', function root(req, res) {
 
 if (require.main === module) {
 	var server = http.createServer(app);
-	server.listen(process.env.PORT || 2018, function onListen() {
+	server.listen(process.env.PORT || 2000, function onListen() {
 		var address = server.address();
 		console.log('Listening on: %j', address);
 		console.log(' -> that probably means: http://localhost:%d', address.port);

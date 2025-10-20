@@ -1,0 +1,10 @@
+module.exports = {
+  plugins: [
+    ['autoprefixer', {
+      overrideBrowserslist: [
+        'last 2 version',
+        'ie >= 10',
+      ],
+    }],
+  ],
+};

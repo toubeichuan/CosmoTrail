@@ -69,7 +69,7 @@ nav#gui {
 		cursor:pointer;
 		border-top: 1px $widgetBorderCol solid;
 		border-bottom: 1px $widgetBorderCol solid;
-		background: darken($widgetBorderCol, 10);
+		background: color.adjust($widgetBorderCol, $lightness: -10%);
 		text-align:center;
 		line-height: 20px;
 		font-size: 20px;

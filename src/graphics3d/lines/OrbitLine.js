@@ -1,6 +1,4 @@
-
-
-import { LineBasicMaterial, BufferGeometry, Geometry, Line, BufferAttribute, VertexColors } from 'three';
+import { LineBasicMaterial, BufferGeometry, Line, BufferAttribute, VertexColors } from 'three';
 import Dimensions from '../Dimensions';
 import DebugPoint from '../utils/DebugPoint';
 import { darken, hexToRgb, rgbToHex } from '../../utils/ColorUtils';
@@ -21,8 +19,15 @@ export default class OrbitLine {
 			color: rgbToHex(darken(hexToRgb(this.color), 0.5)),
 		});
 		this.orbitVertices = orbitVertices.map(val => Dimensions.getScaled(val.clone()));
-		const orbitGeom = new Geometry();
-		orbitGeom.vertices = this.orbitVertices;
+		
+		const orbitGeom = new BufferGeometry();
+		const vertices = new Float32Array(orbitVertices.length * 3);
+		this.orbitVertices.forEach((vertex, i) => {
+			vertices[i * 3] = vertex.x;
+			vertices[i * 3 + 1] = vertex.y;
+			vertices[i * 3 + 2] = vertex.z;
+		});
+		orbitGeom.setAttribute('position', new BufferAttribute(vertices, 3));
 
 		return new Line(orbitGeom, material);
 	}
@@ -61,13 +66,12 @@ export default class OrbitLine {
 		colors[nNumbers + 2] = origColor.b / 255;
 
 		const material = new LineBasicMaterial({
-			vertexColors: VertexColors,
+			vertexColors: true,
 		});
 		const orbitGeom = this.geometry = new BufferGeometry();
 
-		orbitGeom.addAttribute('position', new BufferAttribute(pos, 3));
-		
-		orbitGeom.addAttribute('color', new BufferAttribute(colors, 3));
+		orbitGeom.setAttribute('position', new BufferAttribute(pos, 3));
+		orbitGeom.setAttribute('color', new BufferAttribute(colors, 3));
 
 		return new Line(orbitGeom, material);
 	}
@@ -145,4 +149,4 @@ export default class OrbitLine {
 		return this.line;
 	}
 
-};
+}
